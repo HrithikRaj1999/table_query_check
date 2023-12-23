@@ -1,39 +1,10 @@
-import React, { useCallback, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React from "react";
 import { v4 as uuidv4 } from "uuid";
+import useQueryValidator from "../hooks/useQueryValidator";
 
 const QueryValidator = () => {
-  const location = useLocation();
-  const [isQueryValid, setIsQueryValid] = useState(false);
-  const [queryParams, setQueryParams] = useState([]);
-
-  const showKeyValue = useCallback(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const arr = Array.from(searchParams.entries()).map(([key, value]) => ({
-      key,
-      value,
-    }));
-    setQueryParams(arr);
-  }, [location.search]);
-
-
-  //no space or number symbols aalowed only alphabets
-  
-  const checkQuery = useCallback(() => {
-    const searchParams = new URLSearchParams(location.search);
-    const alphabeticRegex = /^[A-Za-z]+$/;
-    let isValid = true;
-    for (let [,value] of searchParams) {
-      console.log(value)
-      if (!alphabeticRegex.test(value)) {
-        isValid = false;
-        break;
-      }
-    }
-    setIsQueryValid(isValid);
-  }, [location.search]);
+   const [isQueryValid, queryParams, showKeyValue, checkQuery]=useQueryValidator();
   return (
-
     <div style={{marginTop:'5px'}}>
       <h1> Query Details</h1>
       <button style={{ width: "200px" }} onClick={showKeyValue}>
